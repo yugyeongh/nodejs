@@ -1,17 +1,22 @@
 const Sequelize = require('sequelize');
 
-module.exports = class Good extends Sequelize.Model {
+module.exports = class User extends Sequelize.Model {
   static init(sequelize) {
     return super.init({
-      name: {
+      email: {
         type: Sequelize.STRING(40),
         allowNull: false,
+        unique: true,
       },
-      img: {
-        type: Sequelize.STRING(200),
+      nick: {
+        type: Sequelize.STRING(15),
+        allowNull: false,
+      },
+      password: {
+        type: Sequelize.STRING(100),
         allowNull: true,
       },
-      price: {
+      money: {
         type: Sequelize.INTEGER,
         allowNull: false,
         defaultValue: 0,
@@ -20,16 +25,14 @@ module.exports = class Good extends Sequelize.Model {
       sequelize,
       timestamps: true,
       paranoid: true,
-      modelName: 'Good',
-      tableName: 'goods',
+      modelName: 'User',
+      tableName: 'users',
       charset: 'utf8',
       collate: 'utf8_general_ci',
     });
   }
 
   static associate(db) {
-    db.Good.belongsTo(db.User, { as: 'Owner' });
-    db.Good.belongsTo(db.User, { as: 'Sold' });
-    db.Good.hasMany(db.Auction);
+    db.User.hasMany(db.Auction);
   }
 };
